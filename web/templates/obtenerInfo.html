@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+    <form action="{% url 'Insert' %}" method="post">
+        {% csrf_token %}
+        {% comment %} <input type="text" name="organizador" placeholder="organizador">
+        <input type="text" name="tipo" placeholder="tipo">
+        <input type="text" name="fecha" placeholder="fecha">
+        <input type="text" name="hora" id="hora" placeholder="hora">
+        <input type="text" name="lugar" placeholder="lugar">
+        <input type="text" name="presupuesto" placeholder="presupuesto">
+        <input type="text" name="cantidad" placeholder="cantidad">
+        <input type="submit" value="enviar"> {% endcomment %}
+    </form>
+       
+    
+    <form action="{% url 'Delete' %}" method="POST">
+        {% csrf_token %}
+            <label for="id">Id</label>
+            <input type="number" name="id", id="id">
+            <input type="submit" value="eliminar">
+    </form>
+
+    <form action="{% url 'actualizar_evento' evento_id=evento_id%}" method="POST">
+        {% csrf_token %}
+        <label for="evento_id">Id</label>
+        <input type="number" name="evento_id" id="evento_id">
+        <input type="submit" value="Actualizar">    
+    </form>
+
+    {% endblock content %}
+
+
+</body>
+</html>

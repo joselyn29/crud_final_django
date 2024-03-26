@@ -1,0 +1,76 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/insert.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% endblock %} 
+
+{% block content %}
+{% include "fragments/menu.html" %}
+
+<div class="container mt-5">
+    <h1>Lista de Eventos</h1>
+
+    <!-- Aplicar estilos de Bootstrap a la tabla -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Organizador</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Lugar</th>
+                <th>Presupuesto</th>
+                <th>Cantidad de Personas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in data %}
+            <tr>
+                <input type="hidden" name="id" value="{{ evento.id }}">
+                <td>{{ evento.organizador }}</td>
+                <td>{{ evento.tipo }}</td>
+                <td>{{ evento.fecha }}</td>
+                <td>{{ evento.hora }}</td>
+                <td>{{ evento.lugar }}</td>
+                <td>{{ evento.presupuesto }}</td>
+                <td>{{ evento.cantidad_personas }}</td>
+                <td>
+                    <!-- Estilos de Bootstrap para los botones -->
+                    <form action="/home/Delete/" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="evento_id" value="{{ evento.id }}">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form> 
+                    <form action="{% url 'actualizar_evento' evento.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="evento_id" value="{{ evento.id }}">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </form> 
+                </td>
+            </tr>   
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if mensaje %}
+<div class="alert alert-success"id="alerta" role="alert">{{mensaje}}</div>
+{% endif %}
+
+<script>
+    // Función para ocultar el mensaje después de un cierto tiempo (por ejemplo, 5 segundos)
+    setTimeout(function() {
+        var alerta = document.getElementById('alerta');
+        if (alerta) {
+            alerta.style.display = 'none';
+        }
+    }, 3000); // 3000 milisegundos = 3 segundos
+    </script>
+
+{% endblock %}
+
+
+
+
